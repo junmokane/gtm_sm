@@ -329,8 +329,8 @@ class GTM_SM(nn.Module):
                 bool_index_list = cumsum_normalized_wk + torch.tensor(1e-7).to(device=device) <= rand_sample_value
                 knn_sample_index = bool_index_list.sum(1)
                 zt_sampling = self._reparameterized_sample(
-                    zt_mean_observation_tensor[knn_index[range(self.total_dim - self.observe_dim), knn_sample_index], index_sample],
-                    zt_std_observation_tensor[knn_index[range(self.total_dim - self.observe_dim), knn_sample_index], index_sample])
+                    zt_mean_observation_tensor[knn_index[range(self.total_dim - self.observe_dim), knn_sample_index.cpu()], index_sample],
+                    zt_std_observation_tensor[knn_index[range(self.total_dim - self.observe_dim), knn_sample_index.cpu()], index_sample])
                 xt_prediction_tensor[:, index_sample] = self.dec(zt_sampling)
 
             # calculate the reconstruct error
