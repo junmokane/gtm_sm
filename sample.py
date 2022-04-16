@@ -31,7 +31,7 @@ testing_dataset = dset.ImageFolder(root='./datasets/CelebA/testing',
                                            transform=data_transform)
 loader_val = DataLoader(testing_dataset, batch_size=args.batch_size, shuffle=True)
 
-path_to_load = 'saves/GTM_SM_state_dict.pth'
+path_to_load = 'saves/gtm_sm_state_dict_94.pth'
 if torch.cuda.is_available():
     state_dict = torch.load(path_to_load)
 else:

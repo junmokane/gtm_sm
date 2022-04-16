@@ -1,8 +1,12 @@
+import os
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 
 def show_experiment_information(model, x, st_observation_list, st_prediction_list, xt_prediction_list, position):
+    exp = f'[{time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())}]_exp'
+    os.makedirs(f"./results/{exp}", exist_ok=True)
+    
     if not model.training:
         origin_total_dim = model.total_dim
         model.total_dim = 512
@@ -31,7 +35,7 @@ def show_experiment_information(model, x, st_observation_list, st_prediction_lis
 
     fig = plt.figure()
     # interaction mode
-    plt.ion()
+    # plt.ion()
 
     # observation phase
     for t in range(0, model.observe_dim):
@@ -102,7 +106,8 @@ def show_experiment_information(model, x, st_observation_list, st_prediction_lis
                  linestyle='solid', marker='o')
         plt.plot(st_observation_sample[t, 1], st_observation_sample[t, 0], 'bs')
 
-        plt.pause(0.01)
+        # plt.pause(0.01)
+        plt.savefig(f"./results/{result_folder}/Y_{root}/Y_{root}_{i}.tif")
 
     # predition phase
     for t in range(model.total_dim - model.observe_dim):
@@ -189,13 +194,13 @@ def show_experiment_information(model, x, st_observation_list, st_prediction_lis
         plt.pause(0.01)
 
     # show figure
-    plt.show()
+    # plt.show()
 
     # close figure
-    plt.close(fig)
+    # plt.close(fig)
 
     # close interaction mode
-    plt.ioff()
+    # plt.ioff()
 
     if not model.training:
         model.total_dim = origin_total_dim

@@ -47,7 +47,7 @@ def train(epoch, model, optimizer, loader_train):
                     lr=1e-3)
 
             # transforming data
-            training_data = data.to(device=device)
+            training_data = data.to(device=device)  # [16,3,32,32]
 
             # forward + backward + optimize
             optimizer.zero_grad()

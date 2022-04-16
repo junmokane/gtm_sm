@@ -178,7 +178,7 @@ class GTM_SM(nn.Module):
             if t == 0:
                 st_observation_t = torch.zeros(self.batch_size, self.s_dim, device=device)#torch.rand(self.batch_size, self.s_dim, device=device) - 1
             else:
-                replacement = self.enc_st_matrix(action_one_hot_value[:, :, t - 1])
+                replacement = self.enc_st_matrix(action_one_hot_value[:, :, t - 1])  # [16,2]
                 if not self.training_sigmoid:
                     st_observation_t = st_observation_list[t - 1] + replacement + \
                                        torch.randn((self.batch_size, self.s_dim), device=device) * self.r_std
