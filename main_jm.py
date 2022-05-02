@@ -23,7 +23,7 @@ from utils.torch_utils import initNetParams, ChunkSampler, show_images, device_a
 from model import GTM_SM
 from config import *
 from show_results import show_experiment_information
-from train import train, test
+from train_jm import train, test
 
 plt.rcParams['figure.figsize'] = (10.0, 8.0)  # set default size of plots
 plt.rcParams['image.interpolation'] = 'nearest'
@@ -45,7 +45,7 @@ def main():
 
     optimizer = optim.Adam(GTM_SM_model.parameters(), lr=1e-3)
 
-    exp = f'[{time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())}]_model'
+    exp = f'[{time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())}]_no_matrix_loss_train_sigmoid_wo_bce'
     os.makedirs(f"./saves/{exp}", exist_ok=True)
     wandb.init(project="gtm_sm", entity="junmokane", name=exp, config=args)
 

@@ -1,3 +1,5 @@
+import os
+import time
 import torch
 import torch.nn as nn
 import torch.nn.init as init
@@ -31,25 +33,31 @@ testing_dataset = dset.ImageFolder(root='./datasets/CelebA/testing',
                                            transform=data_transform)
 loader_val = DataLoader(testing_dataset, batch_size=args.batch_size, shuffle=True)
 
-path_to_load = 'saves/gtm_sm_state_dict_94.pth'
-if torch.cuda.is_available():
-    state_dict = torch.load(path_to_load)
-else:
-    state_dict = torch.load(path_to_load, map_location=lambda storage, loc: storage)
-GTM_SM_model = GTM_SM(batch_size = args.batch_size)
-GTM_SM_model.load_state_dict(state_dict)
-GTM_SM_model.to(device=device)
+model_num = "[2022-04-20 01:12:50]_no_matrix_loss_train_sigmoid_wo_bce"
+os.makedirs(f"./results/{model_num}", exist_ok=True)
 
-def sample():
-    GTM_SM_model.eval()
-    with torch.no_grad():
-        for batch_idx, (data, _) in enumerate(loader_val):
+for i in range(1, 71):
+    path_to_load = f'saves/{model_num}/gtm_sm_state_dict_{i}.pth'
+    fname = f"./results/{model_num}/state_dict_{i}_"
 
-            #transforming data
-            training_data = data.to(device=device)
-            #forward
-            kld_loss, nll_loss, matrix_loss, st_observation_list, st_prediction_list, xt_prediction_list, position = GTM_SM_model(training_data)
+    if torch.cuda.is_available():
+        state_dict = torch.load(path_to_load)
+    else:
+        state_dict = torch.load(path_to_load, map_location=lambda storage, loc: storage)
+    GTM_SM_model = GTM_SM(batch_size = args.batch_size)
+    GTM_SM_model.load_state_dict(state_dict)
+    GTM_SM_model.to(device=device)
 
-            show_experiment_information(GTM_SM_model, data, st_observation_list, st_prediction_list, xt_prediction_list, position)
+    def sample():
+        GTM_SM_model.eval()
+        with torch.no_grad():
+            for batch_idx, (data, _) in enumerate(loader_val):
 
-sample()
+                #transforming data
+                training_data = data.to(device=device)
+                #forward
+                kld_loss, nll_loss, matrix_loss, st_observation_list, st_prediction_list, xt_prediction_list, position = GTM_SM_model(training_data)
+
+                show_experiment_information(GTM_SM_model, data, st_observation_list, st_prediction_list, xt_prediction_list, position, fname)
+                break  # run only once    
+    sample()
