@@ -1,3 +1,8 @@
+# 220502
+Junmo added the visualization of the GTM-SM.
+Junmo added several memory heuristics to evaluate the GTM-SM.
+Junmo added exploration walk strategy (global + local) rather than random walk for evaluation purpose.
+
 # Generative-Temporal-Models-with-Spatial-Memory
 
 This repo contains code accomplishing the paper, 	[Generative Temporal Models with Spatial Memory
